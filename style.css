@@ -1,0 +1,25 @@
+* {
+    font-family: fantasy;
+}
+
+.jumbotron {
+
+    background-color: #4DB8D5;
+    color: black;
+}
+
+body {
+    background-color: #322715;
+    color: white;
+}
+
+.btn {
+
+    background-color: #EDE4B0;
+
+}
+
+p {
+    background-color: #73521C;
+    text-align: center;
+}

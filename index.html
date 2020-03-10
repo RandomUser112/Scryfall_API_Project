@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>MTG Rules Text Finder</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+
+<body>
+
+    <div class="jumbotron text-center">
+        <h1>Find The Rules Text of Any Magic Card</h1>
+        <h2>Straight from 1997</h2>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <input type="text" placeholder="type a card name..." class="form-control" name="search" id="searchTerm">
+                <input type="button" class="btn" onClick="searchForACard()" value="Search">
+
+            </div>
+        </div>
+        <div class='row'>
+            <div class="col-md-6 id">
+                <h1>Info:</h1>
+                <p id="output" class="rounded"></p>
+            </div>
+            <div class="col-md-6">
+                <h1>Image:</h1>
+                <p id="imgOutput" class="rounded"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function searchForACard() {
+
+            let searchTerm = document.getElementById('searchTerm').value;
+            console.log(searchTerm);
+            let url = 'https://api.scryfall.com/cards/named?exact=' + searchTerm;
+            fetch(url)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((myJson) => {
+                    console.log(myJson);
+                    let oo = document.getElementById('overOutput');
+                    let o = document.getElementById('output')
+                    let io = document.getElementById('imgOutput');
+                    if (myJson.object != "card") {
+                        o.innerHTML += "Not a Magic card" + "<br>" + "<br>";
+                        io.innerHTML += "No Image" + "<br>" + "<br>";
+                    } else {
+                        o.innerHTML += "Name: " + myJson.name + "<br>";
+                        o.innerHTML += "Cost: " + myJson.mana_cost + "<br>";
+                        o.innerHTML += "Colors: ";
+                        for (var i = 0; i < myJson.colors.length; i++) {
+                            o.innerHTML += myJson.colors[i];
+                        }
+
+                        o.innerHTML += "<br>";
+                        o.innerHTML += "Card Rules: " + myJson.oracle_text + "<br>" + "<br>";
+                        io.innerHTML += "<img src='" + myJson.image_uris.small + "'></img>" + "<br>" + "<br>";
+                    }
+                });
+        }
+
+    </script>
+
+</body>
+
+</html>
